@@ -1,14 +1,22 @@
 {
   "name": "router404",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
+  "version": "0.0.1",
+  "description": "A primitive router ",
+  "main": "dist/router.js",
   "scripts": {
     "test": "jest",
-    "build": "babel src/ -d lib/",
+    "build": "babel src/ -d dist/",
     "prepublish": "npm run build"
   },
-  "author": "Ippei Tanaka",
+  "author": {
+    "name": "Ippei Tanaka",
+    "url": "http://www.ipe.club"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ippei-tanaka/router404.git"
+  },
+  "files": ["dist"],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
