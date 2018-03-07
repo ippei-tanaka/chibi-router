@@ -62,4 +62,17 @@ describe('buildRouter', () => {
         const value = router('/users/abc/comments/dfg');
         expect(value).toBe('<div>user id: ${userId} and <span>comment id :dfg</span></div>');
     });
+
+    it('should deal with async handlers.', async () => {
+
+        const router = buildRouter({
+            '/' : async () => 'hey!',
+            '/b' : () => 'hey b!',
+        });
+
+        expect(router('/')).toHaveProperty('then');
+        expect(await router('/')).toBe('hey!');
+        expect(router('/b')).toBe('hey b!');
+        expect(await router('/b')).toBe('hey b!');
+    });
 });

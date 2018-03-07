@@ -35,6 +35,12 @@ describe('path matcher', () => {
         });
 
         it('should return parameters if the tested path is matched to the pattern with wildcards', () => {
+            expect(match('*','/users/name')).toMatchObject({wildcards: ['users/name']});
+            expect(match('*/users/*','/category/users/name')).toMatchObject({wildcards: ['category', 'name']});
+            expect(match('*/users/*','/category/us-ers/name')).toBeFalsy();
+            expect(match('*/*','/category/name')).toMatchObject({wildcards: ['category', 'name']});
+            expect(match('*/*','/')).toBeFalsy();
+            expect(match('/*','/users/name')).toMatchObject({wildcards: ['users/name']});
             expect(match('/users/*','/users/name')).toMatchObject({wildcards: ['name']});
             expect(match('/users/*','/users/name/test')).toMatchObject({wildcards: ['name/test']});
             expect(match('/users/*','/users/name/test/')).toMatchObject({wildcards: ['name/test']});

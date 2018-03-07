@@ -11,13 +11,13 @@ export const buildRouter = (routes) => {
             handler: routes[pattern]
         }));
 
-    return (path, context) => {
-        for (let route of router)
+    return (path, ...rest) => {
+        for (let {matcher, handler} of router)
         {
-            const matchedVars = route.matcher(path);
+            const matchedVars = matcher(path);
             if (matchedVars) {
                 const {params, wildcards} = matchedVars;
-                return route.handler({params, wildcards, context});
+                return handler({params, wildcards}, ...rest);
             }
         }
         return null;
