@@ -1,34 +1,8 @@
-import Router from '../src/Router';
+import {buildRouter} from '../src/router';
 
-describe('Router', () => {
-    it('should invoke a corresponding handler', async () => {
-        const router = new Router([
-            {
-                path: '/',
-                handler: () => {
-                    return 'a';
-                }
-            },
-            {
-                path: '/test',
-                handler: () => {
-                    return 'b';
-                }
-            }
-        ]);
-
-        const value1 = await router.execute('/');
-        expect(value1).toBe('a');
-
-        const value2 = await router.execute('/test');
-        expect(value2).toBe('b');
-
-        const value3 = await router.execute('/else').catch(() => 'Not Found');
-        expect(value3).toBe('Not Found');
-    });
-
-    it('should take an route object as an argument of the constructor', async () => {
-        const router = new Router({
+describe('buildRouter', () => {
+    it('should take an route object as an argument of the constructor', () => {
+        const router = buildRouter({
             '/': () => {
                 return 'root';
             },
@@ -37,43 +11,55 @@ describe('Router', () => {
             }
         });
 
-        const value1 = await router.execute('/');
+        const value1 = router('/');
         expect(value1).toBe('root');
 
-        const value2 = await router.execute('/test');
+        const value2 = router('/test');
         expect(value2).toBe('test');
 
-        const value3 = await router.execute('/else').catch(() => 'Not Found');
-        expect(value3).toBe('Not Found');
+        const value3 = router('/else');
+        expect(value3).toBeNull();
     });
 
-    it('should pick the first route if there are multiple matching routes.', async () => {
-        const router = new Router([
-            {
-                path: '/test',
-                handler: () => {
-                    return 'a';
-                }
+    it('should pick the first route if there are multiple matching routes.', () => {
+        const router = buildRouter({
+            '/test' : () => {
+                return 'a';
             },
-            {
-                path: '/test',
-                handler: () => {
-                    return 'b';
-                }
+            '/test/' : () => {
+                return 'b';
             }
-        ]);
+        });
 
-        const value = await router.execute('/test');
+        const value = router('/test');
         expect(value).toBe('a');
     });
 
-    it('should receive parameters.', async () => {
-        const router = new Router({
+    it('should receive parameters.', () => {
+        const router = buildRouter({
             '/users/:userId/comments/:commentId'
                 : ({params: {userId, commentId}}) => `${userId} ${commentId}`
         });
 
-        const value = await router.execute('/users/abc/comments/dfg');
+        const value = router('/users/abc/comments/dfg');
         expect(value).toBe('abc dfg');
+    });
+
+    it('should receive wildcards.', () => {
+
+        const childRouter = buildRouter({
+            '/comments/:commentId' : ({params: {commentId}}) => {
+                return `<span>comment id :${commentId}</span>`;
+            }
+        });
+
+        const router = buildRouter({
+            '/users/:userId/*' : ({params: {userId}, wildcards}) => {
+                return '<div>user id: ${userId} and ' + childRouter(wildcards[0]) + '</div>';
+            }
+        });
+
+        const value = router('/users/abc/comments/dfg');
+        expect(value).toBe('<div>user id: ${userId} and <span>comment id :dfg</span></div>');
     });
 });
