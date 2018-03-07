@@ -8,15 +8,14 @@
     "build": "babel src/ -d dist/",
     "prepublish": "npm run build"
   },
-  "author": {
-    "name": "Ippei Tanaka",
-    "url": "http://www.ipe.club"
-  },
+  "author": "Ippei Tanaka (http://www.ipe.club)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ippei-tanaka/router404.git"
+    "url": "git+https://github.com/ippei-tanaka/router404.git"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -28,5 +27,12 @@
   },
   "dependencies": {
     "ramda": "^0.25.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ippei-tanaka/router404/issues"
+  },
+  "homepage": "https://github.com/ippei-tanaka/router404#readme",
+  "directories": {
+    "test": "test"
   }
 }
