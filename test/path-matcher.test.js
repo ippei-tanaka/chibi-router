@@ -1,4 +1,6 @@
-import {match} from '../src/path-matcher';
+import {buildMatcher} from '../src/path-matcher';
+
+const match = (pattern, path) => buildMatcher(pattern)(path);
 
 describe('path matcher', () => {
     describe('match', () => {

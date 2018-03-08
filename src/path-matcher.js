@@ -43,8 +43,6 @@ export const buildMatcher = (pattern) => {
     };
 };
 
-export const match = (pattern, path) => buildMatcher(pattern)(path);
-
 const WILDCARD_SYMBOL = Symbol('*');
 
 const trimSlashes = pipe(
