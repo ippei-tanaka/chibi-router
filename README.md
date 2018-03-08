@@ -2,7 +2,7 @@
 
 ![Travis Status](https://api.travis-ci.org/ippei-tanaka/chibi-router.svg?branch=master)
 
-A primitive router
+A tiny and powerful router
 
 ## Install the package via npm
 ```npm install --save-dev chibi-router```
