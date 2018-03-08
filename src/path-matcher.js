@@ -68,5 +68,6 @@ const constructPatternRegexp = pipe(
 
 const replaceSpecialChars = pipe(
     s => s.replace(/:[^/\s?#&=]+/g, '([^/\\s?#&=]+)'),
+    s => s.replace(/\/(\*)/g, '\/?$1'),
     s => s.replace(/\*/g, '(.*)')
 );
