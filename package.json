@@ -1,7 +1,7 @@
 {
-  "name": "router404",
-  "version": "0.0.4",
-  "description": "A primitive router ",
+  "name": "chibi-router",
+  "version": "0.0.1",
+  "description": "A tiny and powerful router",
   "main": "dist/router.js",
   "scripts": {
     "test": "jest",
@@ -11,7 +11,7 @@
   "author": "Ippei Tanaka (http://www.ipe.club)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ippei-tanaka/router404.git"
+    "url": "git+https://github.com/ippei-tanaka/chibi-router.git"
   },
   "files": [
     "dist"
@@ -29,9 +29,9 @@
     "ramda": "^0.25.0"
   },
   "bugs": {
-    "url": "https://github.com/ippei-tanaka/router404/issues"
+    "url": "https://github.com/ippei-tanaka/chibi-router/issues"
   },
-  "homepage": "https://github.com/ippei-tanaka/router404#readme",
+  "homepage": "https://github.com/ippei-tanaka/chibi-router#readme",
   "directories": {
     "test": "test"
   }
