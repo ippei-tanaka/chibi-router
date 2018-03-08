@@ -17,7 +17,7 @@ export const buildMatcher = (pattern) => {
             throw new SyntaxError('The path has to be string.');
         }
 
-        path = constructSafePathString(path);
+        path = '/' + trimSlashes(path);
 
         const matched = path.match(patternRegexp);
 
@@ -47,10 +47,9 @@ export const match = (pattern, path) => buildMatcher(pattern)(path);
 
 const WILDCARD_SYMBOL = Symbol('*');
 
-const constructSafePathString = pipe(
+const trimSlashes = pipe(
     s => s.replace(/^\/*/, ''),
-    s => s.replace(/\/*$/, ''),
-    s => '/' + s
+    s => s.replace(/\/*$/, '')
 );
 
 const findParameterString = pipe(
@@ -61,25 +60,13 @@ const findParameterString = pipe(
 );
 
 const constructPatternRegexp = pipe(
-    s => /\*/.test(s)
-        ? constructPatternRegexpWithWildcard(s)
-        : constructPatternRegexpWithoutWildcard(s)
-);
-
-const constructPatternRegexpWithoutWildcard = pipe(
-    s => constructSafePathString(s),
+    s => trimSlashes(s),
     s => replaceSpecialChars(s),
     s => '^\/?' + s + '\/?$',
-    s => new RegExp(s)
-);
-
-const constructPatternRegexpWithWildcard = pipe(
-    s => replaceSpecialChars(s),
-    s => '^' + s + '$',
-    s => new RegExp(s)
+    s => new RegExp(s),
 );
 
 const replaceSpecialChars = pipe(
     s => s.replace(/:[^/\s?#&=]+/g, '([^/\\s?#&=]+)'),
-    s => s.replace(/\*/g, '(.+)')
+    s => s.replace(/\*/g, '(.*)')
 );
