@@ -1,5 +1,7 @@
 # router404
 
+![Travis Status](https://api.travis-ci.org/ippei-tanaka/router404.svg?branch=master)
+
 A primitive router
 
 ## Install the package via npm
