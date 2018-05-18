@@ -2,6 +2,8 @@ import pipe from 'ramda/src/pipe';
 import defaultTo from 'ramda/src/defaultTo';
 import drop from 'ramda/src/drop';
 
+const WILDCARD = '___WILDCARD___';
+
 export const buildMatcher = (pattern) => {
 
     if (typeof pattern !== 'string') {
@@ -31,7 +33,7 @@ export const buildMatcher = (pattern) => {
 
         if (paramValues.length > 0) {
             paramKeys.forEach((paramKey, index) => {
-                if (paramKey === WILDCARD_SYMBOL) {
+                if (paramKey === WILDCARD) {
                     wildcards.push(paramValues[index]);
                 } else {
                     params[paramKey] = paramValues[index];
@@ -43,8 +45,6 @@ export const buildMatcher = (pattern) => {
     };
 };
 
-const WILDCARD_SYMBOL = Symbol('*');
-
 const trimSlashes = pipe(
     s => s.replace(/^\/*/, ''),
     s => s.replace(/\/*$/, '')
@@ -54,7 +54,7 @@ const findParameterString = pipe(
     s => s.match(/(:[^/\s?#&=]+)|(\*)/g),
     a => defaultTo([])(a),
     a => a.map(s => s.match(/([^/\s?:#&=]+)|(\*)/)[0]),
-    a => a.map(s => s === '*' ? WILDCARD_SYMBOL : s)
+    a => a.map(s => s === '*' ? WILDCARD : s)
 );
 
 const constructPatternRegexp = pipe(

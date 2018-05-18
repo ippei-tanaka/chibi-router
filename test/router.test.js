@@ -75,4 +75,15 @@ describe('buildRouter', () => {
         expect(router('/b')).toBe('hey b!');
         expect(await router('/b')).toBe('hey b!');
     });
+
+    it('should send arguments to callbacks.', async () => {
+
+        const router = buildRouter({
+            '/' : (_, name, size) => {
+                return `My name is ${name} and my size is ${size}`;
+            }
+        });
+
+        expect(router('/', 'ippei', '1cm')).toBe('My name is ippei and my size is 1cm');
+    });
 });
