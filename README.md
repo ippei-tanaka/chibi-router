@@ -36,10 +36,38 @@ const parentRouter = buildRouter({
     '/admin/*': ({wildcards}) => 
         `<div>This is Admin Page. ${childRouter(wildcards[0])}</div>`
 });
- 
+
 console.log(parentRouter('/admin/products/candle')); 
 // <div>This is Admin Page. <div>Product is candle</div></div>
 
 console.log(parentRouter('/admin/users/Me')); 
 // <div>This is Admin Page. <div>User is Me</div></div>
+```
+
+### Asynchronous Route Callback
+```javascript
+import {buildRouter} from 'chibi-router';
+
+const router = buildRouter({
+    '/' : async () => 'hey Async!',
+    '/b' : () => 'hey Sync!',
+});
+
+(async () => {
+    console.log(await router('/')); // hey Async!
+    console.log(await router('/b')); // hey Sync!
+})();
+```
+
+### Passing values to arguments
+```javascript
+import {buildRouter} from 'chibi-router';
+
+const router = buildRouter({
+    '/' : (_, ...args) => {
+        console.log(args); // [ 'a', 'b', true, [ 1 ] ]
+    }
+});
+
+router('/', 'a', 'b', true, [1]);
 ```
