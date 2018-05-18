@@ -13,8 +13,9 @@ export const buildRouter = (routes) =>
         }));
 
     return (path, ...rest) => {
-        for (let {matcher, handler} of router)
+        for (let i = 0; i < router.length; i++)
         {
+            const {matcher, handler} = router[i];
             const matchedVars = matcher(path);
             if (matchedVars) {
                 const {params, wildcards} = matchedVars;

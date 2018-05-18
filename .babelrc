@@ -1,9 +1,5 @@
 {
   "presets": [
     "env"
-  ],
-  "plugins": [
-    "transform-regenerator",
-    "transform-class-properties"
   ]
 }
