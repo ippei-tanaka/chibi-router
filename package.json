@@ -25,9 +25,7 @@
     "babel-preset-env": "^1.6.1",
     "jest": "^22.4.2"
   },
-  "dependencies": {
-    "ramda": "^0.25.0"
-  },
+  "dependencies": {},
   "bugs": {
     "url": "https://github.com/ippei-tanaka/chibi-router/issues"
   },

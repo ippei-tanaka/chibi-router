@@ -1,7 +1,3 @@
-import pipe from 'ramda/src/pipe';
-import defaultTo from 'ramda/src/defaultTo';
-import drop from 'ramda/src/drop';
-
 const WILDCARD = '___WILDCARD___';
 
 export const buildMatcher = (pattern) => {
@@ -27,7 +23,7 @@ export const buildMatcher = (pattern) => {
             return null;
         }
 
-        const paramValues = drop(1, matched);
+        const paramValues = matched.slice(1);
         let params = {};
         let wildcards = [];
 
@@ -45,27 +41,31 @@ export const buildMatcher = (pattern) => {
     };
 };
 
-const trimSlashes = pipe(
-    s => s.replace(/^\/*/, ''),
-    s => s.replace(/\/*$/, '')
-);
+const trimSlashes = (s) => {
+    s = s.replace(/^\/*/, '');
+    s = s.replace(/\/*$/, '');
+    return s;
+};
 
-const findParameterString = pipe(
-    s => s.match(/(:[^/\s?#&=]+)|(\*)/g),
-    a => defaultTo([])(a),
-    a => a.map(s => s.match(/([^/\s?:#&=]+)|(\*)/)[0]),
-    a => a.map(s => s === '*' ? WILDCARD : s)
-);
+const findParameterString = (s) => {
+    s = s.match(/(:[^/\s?#&=]+)|(\*)/g);
+    let a = s || [];
+    a = a.map(_s => _s.match(/([^/\s?:#&=]+)|(\*)/)[0]);
+    a = a.map(_s => _s === '*' ? WILDCARD : _s);
+    return a;
+};
 
-const constructPatternRegexp = pipe(
-    s => trimSlashes(s),
-    s => replaceSpecialChars(s),
-    s => '^\/?' + s + '\/?$',
-    s => new RegExp(s),
-);
+const constructPatternRegexp = (s) => {
+    s = trimSlashes(s);
+    s = replaceSpecialChars(s);
+    s = '^\/?' + s + '\/?$';
+    s = new RegExp(s);
+    return s;
+};
 
-const replaceSpecialChars = pipe(
-    s => s.replace(/:[^/\s?#&=]+/g, '([^/\\s?#&=]+)'),
-    s => s.replace(/\/(\*)/g, '\/?$1'),
-    s => s.replace(/\*/g, '(.*)')
-);
+const replaceSpecialChars = (s) => {
+    s = s.replace(/:[^/\s?#&=]+/g, '([^/\\s?#&=]+)');
+    s = s.replace(/\/(\*)/g, '\/?$1');
+    s = s.replace(/\*/g, '(.*)');
+    return s;
+};
