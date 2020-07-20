@@ -1,6 +1,6 @@
 {
   "name": "chibi-router",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A tiny and powerful router",
   "main": "dist/router.js",
   "scripts": {
