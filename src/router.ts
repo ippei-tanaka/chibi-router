@@ -1,6 +1,10 @@
-import {buildMatcher} from "./path-matcher";
+import {buildMatcher, Matches} from "./path-matcher";
 
-export const buildRouter = (routes) => 
+export type Routes<T> = {
+    [key:string]: (matches:Matches, ...rest:any) => T
+};
+
+export const buildRouter = (routes:Routes<any>|null) =>
 {
     if (typeof routes !== 'object' || routes === null) {
         throw new SyntaxError('routes should be a non-null object.');
@@ -12,7 +16,7 @@ export const buildRouter = (routes) =>
             handler: routes[pattern]
         }));
 
-    return (path, ...rest) => {
+    return (path:string, ...rest:any) => {
         for (let i = 0; i < router.length; i++)
         {
             const {matcher, handler} = router[i];

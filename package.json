@@ -5,10 +5,10 @@
   "main": "dist/router.js",
   "scripts": {
     "test": "jest",
-    "build": "babel src/ -d dist/",
-    "prepublish": "npm run build"
+    "tsc": "tsc",
+    "prepublish": "npm run tsc"
   },
-  "author": "Ippei Tanaka (http://www.ipe.club)",
+  "author": "Ippei Tanaka",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ippei-tanaka/chibi-router.git"
@@ -18,10 +18,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-jest": "^22.4.1",
-    "babel-preset-env": "^1.6.1",
-    "jest": "^22.4.2"
+    "@types/jest": "^26.0.5",
+    "jest": "^26.1.0",
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
   },
   "dependencies": {},
   "bugs": {

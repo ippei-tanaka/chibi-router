@@ -54,7 +54,7 @@ describe('buildRouter', () => {
         });
 
         const router = buildRouter({
-            '/users/:userId/*' : ({params: {userId}, wildcards}) => {
+            '/users/:userId/*' : ({wildcards}) => {
                 return '<div>user id: ${userId} and ' + childRouter(wildcards[0]) + '</div>';
             }
         });

@@ -1,6 +1,15 @@
 const WILDCARD = '___WILDCARD___';
 
-export const buildMatcher = (pattern) => {
+export type Params = {
+    [key:string]:string
+};
+
+export type Matches = {
+    params:Params,
+    wildcards:string[]
+};
+
+export const buildMatcher = (pattern:string) => {
 
     if (typeof pattern !== 'string') {
         throw new SyntaxError('The pattern has to be string.');
@@ -9,7 +18,7 @@ export const buildMatcher = (pattern) => {
     const patternRegexp = constructPatternRegexp(pattern);
     const paramKeys = findParameterString(pattern);
 
-    return (path) => {
+    return (path:string):Matches|null => {
 
         if (typeof path !== 'string') {
             throw new SyntaxError('The path has to be string.');
@@ -24,8 +33,8 @@ export const buildMatcher = (pattern) => {
         }
 
         const paramValues = matched.slice(1);
-        let params = {};
-        let wildcards = [];
+        let params:Params = {};
+        let wildcards:string[] = [];
 
         if (paramValues.length > 0) {
             paramKeys.forEach((paramKey, index) => {
@@ -41,29 +50,31 @@ export const buildMatcher = (pattern) => {
     };
 };
 
-const trimSlashes = (s) => {
+const trimSlashes = (s:string) => {
     s = s.replace(/^\/*/, '');
     s = s.replace(/\/*$/, '');
     return s;
 };
 
-const findParameterString = (s) => {
-    s = s.match(/(:[^/\s?#&=]+)|(\*)/g);
-    let a = s || [];
-    a = a.map(_s => _s.match(/([^/\s?:#&=]+)|(\*)/)[0]);
+const findParameterString = (s:string) => {
+    const tempS = s.match(/(:[^/\s?#&=]+)|(\*)/g);
+    let a = tempS || [];
+    a = a.map(_s => {
+        const m = _s.match(/([^/\s?:#&=]+)|(\*)/);
+        return m ? m[0] : ""
+    });
     a = a.map(_s => _s === '*' ? WILDCARD : _s);
     return a;
 };
 
-const constructPatternRegexp = (s) => {
+const constructPatternRegexp = (s:string) => {
     s = trimSlashes(s);
     s = replaceSpecialChars(s);
     s = '^\/?' + s + '\/?$';
-    s = new RegExp(s);
-    return s;
+    return new RegExp(s);
 };
 
-const replaceSpecialChars = (s) => {
+const replaceSpecialChars = (s:string) => {
     s = s.replace(/:[^/\s?#&=]+/g, '([^/\\s?#&=]+)');
     s = s.replace(/\/(\*)/g, '\/?$1');
     s = s.replace(/\*/g, '(.*)');
